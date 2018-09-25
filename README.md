@@ -12,7 +12,7 @@ This helper only use SQL Query createCommand Not Activerecord!
 controller/site.php
 
 ```
-	...
+    ...
     function actioGetdata()
     {
     	if(Yii::$app->request->isAjax)
@@ -61,13 +61,13 @@ controller/site.php
 
     	$this->render('show_data_mahasiswa', []);
     }
-	...
+    ...
 ```
 ----
 views/site/show_data_mahasiswa.php
 ```
 <?php
-	...
+    ...
     echo \app\components\DatatableHelper::table([
         'context' => $this,
         'url'     => \Yii::$app->getUrlManager()->createUrl("/site/getdata"),
@@ -84,6 +84,6 @@ views/site/show_data_mahasiswa.php
             'ALAMAT' //Header Col 2
         ]
     ]);
-	...
+    ...
 ?>
 ```
