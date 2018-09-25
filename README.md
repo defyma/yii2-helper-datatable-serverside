@@ -59,7 +59,7 @@ controller/site.php
     	    return $data;
         }
 
-    	$this->render('show_data_mahasiswa', []);
+    	return $this->render('show_data_mahasiswa', []);
     }
     ...
 ```
