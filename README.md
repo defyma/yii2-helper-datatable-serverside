@@ -1,5 +1,5 @@
 
-# Yii2 Datatable Manual Serverside
+# Yii2 Helper For Datatable Manual Serverside
 
 This helper only use SQL Query createCommand Not Activerecord!
 
