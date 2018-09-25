@@ -12,22 +12,22 @@ This helper only use SQL Query createCommand Not Activerecord!
 controller/site.php
 
 ```
-	..
-	function actioGetdata()
-	{
-		if(Yii::$app->request->isAjax)
-	    {
-	        $connection = Yii::$app->get('db');
-	        $sql = "
+	...
+    function actioGetdata()
+    {
+    	if(Yii::$app->request->isAjax)
+        {
+            $connection = Yii::$app->get('db');
+            $sql = "
                 SELECT
                     a.id,
                     a.nama,
                     a.alamat
                 FROM
                     mahasiswa a
-	        ";
+            ";
 
-	        $data = \app\components\DatatableHelper::generate([
+            $data = \app\components\DatatableHelper::generate([
                 'connection' => $connection,
                 'query'      => $sql,
                 'column' => [
@@ -37,7 +37,7 @@ controller/site.php
                 ],
                 'query_has_where' => true,
                 'order' => 'a.id ASC'
-	        ]);
+            ]);
 
             //Assign Position
             $row = [];
@@ -55,20 +55,20 @@ controller/site.php
             $data['data'] = $row;
 
             // Return Json data table
-		    \Yii::$app->response->format = Response::FORMAT_JSON;
-		    return $data;
-	    }
+    	    \Yii::$app->response->format = Response::FORMAT_JSON;
+    	    return $data;
+        }
 
-		$this->render('show_data_mahasiswa', []);
-	}
-	..
+    	$this->render('show_data_mahasiswa', []);
+    }
+	...
 ```
 ----
 views/site/show_data_mahasiswa.php
 ```
 <?php
-	..
-	echo \app\components\DatatableHelper::table([
+	...
+    echo \app\components\DatatableHelper::table([
         'context' => $this,
         'url'     => \Yii::$app->getUrlManager()->createUrl("/site/getdata"),
         'option_datatable' => [
@@ -83,7 +83,7 @@ views/site/show_data_mahasiswa.php
             'NAMA', //Header Col 1
             'ALAMAT' //Header Col 2
         ]
-	]);
-	..
+    ]);
+	...
 ?>
 ```
