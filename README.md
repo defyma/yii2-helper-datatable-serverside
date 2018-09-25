@@ -44,9 +44,9 @@ controller/site.php
             foreach($data['data'] as $ket => $val)
             {
                 $val = [];
-                $val = $value['id']; // Col 0
-                $val = $value['nama']; // Col 1
-                $val = $value['alamat']; // Col 2
+                $val[] = $value['id']; // Col 0
+                $val[] = $value['nama']; // Col 1
+                $val[] = $value['alamat']; // Col 2
 
                 array_push($row, $val);
             }
