@@ -1,4 +1,4 @@
-<?php namespace app\components;
+<?php namespace defyma\helper;
 
 /**
  * DatatableHelper.php
