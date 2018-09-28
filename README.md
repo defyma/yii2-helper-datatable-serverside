@@ -7,6 +7,7 @@ This helper only use SQL Query createCommand Not Activerecord!
 
 1. Clone Or Download this project, and extract
 2. Copy **DatatableHelper.php** folder to **@app\components**
+3. add {{DATATABLE_SEARCH}} on query for generated serach by dataTable
 
 ## Example
 controller/site.php
@@ -17,42 +18,85 @@ controller/site.php
     {
     	if(Yii::$app->request->isAjax)
         {
-            $connection = Yii::$app->get('db');
             $sql = "
                 SELECT
-                    a.id,
-                    a.nama,
-                    a.alamat
+                    a.ID,
+                    a.KATEGORI,
+                    a.DESIGNATOR,
+                    a.URAIAN,
+                    a.DESIGNATOR_WBS,
+                    a.URAIAN_WBS,
+                    a.SATUAN_WBS,
+                    sum(a.QTY) QTY,
+                    a.SATUAN,
+                    sum(a.nilai) NILAI
                 FROM
-                    mahasiswa a
+                    EPROP_INDIKATIF_SPEND a
+                WHERE
+                    ( a.DESIGNATOR IS NOT NULL AND a.ID IS NOT NULL )
+
+                    {{DATATABLE_SEARCH}}
+
+                GROUP BY
+                    KATEGORI,
+                    DESIGNATOR,
+                    URAIAN,
+                    satuan,
+                    a.DESIGNATOR_WBS,
+                    a.URAIAN_WBS,
+                    a.SATUAN_WBS
             ";
 
             $data = \app\components\DatatableHelper::generate([
                 'connection' => $connection,
+                'db_type'    => 'oracle',
                 'query'      => $sql,
-                'column' => [
-                    'a.id',
-                    'a.nama',
-                    'a.alamat'
+                'columnSearch' => [ //Column For Search in Table
+                    'a.KATEGORI',
+                    'a.DESIGNATOR',
+                    'a.URAIAN',
+                    'a.SATUAN',
+                    'QTY',
+                    'NILAI',
+                    'a.DESIGNATOR_WBS',
+                    'a.URAIAN_WBS',
+                    'a.SATUAN_WBS'
+                ],
+                'columnHeader' => [ //Make Sure 'columnHeader' Same as 'column_label' on View
+                    'KATEGORI',
+                    'DESIGNATOR',
+                    'URAIAN',
+                    'SATUAN',
+                    [   //Custom Value
+                        'column' => 'QTY',
+                        'value'  => function($data) {
+                            return \app\components\WebHelper::formatNumber($data['QTY']);
+                        }
+                    ],
+                    'NILAI'
                 ],
                 'query_has_where' => true,
-                'order' => 'a.id ASC'
+                // 'order'           => 'a.KATEGORI ASC',
+                /*
+                'action_column' => [           //action_column will generate in last of column
+                    'template'  => '{delete} {edit} {some_other_button}',
+                    'buttons'   => [
+                        'delete' => function($data) {
+                            return "<button> This Button Delete ".$data['ID']."</button>";
+                        },
+                        'edit'  => function($data) {
+                            return "<button> This Button Edit ".$data['ID']."</button>";
+                        },
+                        'some_other_button' => function($data) {
+                            return "<button> Other Button </button>";
+                        }
+                    ]
+                ]
+                */
             ]);
 
-            //Assign Position
-            $row = [];
-            foreach($data['data'] as $ket => $val)
-            {
-                $val = [];
-                $val[] = $value['id']; // Col 0
-                $val[] = $value['nama']; // Col 1
-                $val[] = $value['alamat']; // Col 2
-
-                array_push($row, $val);
-            }
-
-            //Replace data
-            $data['data'] = $row;
+            //if has footer callback
+            $data['footer_total'] = 1000;
 
             // Return Json data table
     	    \Yii::$app->response->format = Response::FORMAT_JSON;
@@ -70,18 +114,44 @@ views/site/show_data_mahasiswa.php
     ...
     echo \app\components\DatatableHelper::table([
         'context' => $this,
-        'url'     => \Yii::$app->getUrlManager()->createUrl("/site/getdata"),
-        'option_datatable' => [
-            'ordering' => false,
+        'url'     => \Yii::$app->getUrlManager()->createUrl(['parameter/spendingitems/getdata']),
+        'option_datatable' => [ //Option for Data Table
+            'language'   => Yii::$app->params['datatable_indo'],
+            'ordering'   => true,
+            'columnDefs' => '
+                [
+                    { className: "dt-right", "targets": [4] },
+                    { className: "dt-right", "targets": [5] },
+                ]
+            ',
+            'footerCallback' => '
+                function( tfoot, data, start, end, display ) {
+                    var response = this.api().ajax.json();
+                    if(response){
+                        var th = $(tfoot).find("th");
+                        th.eq(5).html(response["footer_total"]);
+                    }
+                }
+            '
         ],
-        'option'  => [
-            'id'       => 'tbl_mahasiswa',
+        'option'  => [ //Option for Table
+            'id'       => 'tbl_indikatif_spending',
             'class'    => 'table table-hover',
+            'footer'   => true,
         ],
-        'column_label' => [
-            'ID', //Header Col 0
-            'NAMA', //Header Col 1
-            'ALAMAT' //Header Col 2
+        'column_label' => [ //Make Sure 'column_label' Same as 'column_header' on Controller
+            'Kategori',
+            [
+                'label' => 'Designator',
+                'option' => [ //you can add any option
+                    'style' => 'width: 100px'
+                ]
+            ],
+            'Uraian',
+            'Satuan',
+            'Qty',
+            'Nilai',
+            'Aksi'  //action_column will generate in last column
         ]
     ]);
     ...
