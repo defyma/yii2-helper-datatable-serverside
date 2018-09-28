@@ -56,14 +56,11 @@ class DatatableHelper// extends Component
         //     array_push($row, $val);
         // }
 
-        $totalRecord = self::getTotalRecord();
-
         $data = [
             'draw'            => self::$draw,
-            'recordsTotal'    => $totalRecord,
-            'recordsFiltered' => !empty($q) ? self::getTotalSearch() : $totalRecord,
-            'data'            => $result,
-            'raw_sql'         => $command->rawSql
+            'recordsTotal'    => self::getTotalRecord(),
+            'recordsFiltered' => self::getTotalSearch(),
+            'data'            => $result
         ];
 
         return $data;
@@ -110,8 +107,7 @@ class DatatableHelper// extends Component
         $sql       = self::$query;
         $posisi    = strpos($sql, "FROM");
         $header    = substr($sql, 0, $posisi);
-        // $sql_count = " SELECT count(".self::$columnSearch[0].") jml ";
-        $sql_count = " SELECT count(1) jml ";
+        $sql_count = " SELECT count(".self::$columnSearch[0].") jml ";
         $generated = str_replace($header, $sql_count, $sql);
         $command   = self::$connection->createCommand($generated);
         $result    = $command->queryOne();
@@ -127,8 +123,7 @@ class DatatableHelper// extends Component
         $sql       = self::$query;
         $posisi    = strpos($sql, "FROM");
         $header    = substr($sql, 0, $posisi);
-        // $sql_count = " SELECT count(".self::$columnSearch[0].") jml ";
-        $sql_count = " SELECT count(1) jml ";
+        $sql_count = " SELECT count(".self::$columnSearch[0].") jml ";
         $generated = str_replace($header, $sql_count, $sql);
 
         if(!empty(self::$q))
