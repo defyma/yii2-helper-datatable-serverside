@@ -5,5 +5,29 @@
     "homepage": "http://www.defyma.com/",
     "type": "helper",
     "license": "MIT",
-    "minimum-stability": "stable"
+    "authors": [
+        {
+            "name": "Defy Ma",
+            "email": "defyma85@gmail.com"
+        }
+    ],
+	"repositories":[
+		{
+			"type": "git",
+			"url": "https://github.com/defyma/yii2-helper-datatable-serverside"
+		}
+	],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "defyma\\": ""
+        }
+    },
+	"minimum-stability": "dev",
+    "prefer-stable": true,
+	"branch-alias": {
+            "dev-master": "1.1.x-dev"
+    }
 }
