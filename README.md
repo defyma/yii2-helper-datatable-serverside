@@ -3,11 +3,17 @@
 
 This helper only use SQL Query createCommand Not Activerecord!
 
-# How To Use
+# Install With Composer
 
-1. Clone Or Download this project, and extract
-2. Copy **DatatableHelper.php** folder to **@app\components**
-3. add {{DATATABLE_SEARCH}} on query for generated serach by dataTable
+```
+    php composer.phar require defyma/yii2-datatable-manual-serverside:"v1.*"
+```
+
+# Or Require it
+```
+    "defyma/yii2-datatable-manual-serverside": "v1.*"
+```
+
 
 ## Example
 controller/site.php
