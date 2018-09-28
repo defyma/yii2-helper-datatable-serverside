@@ -4,5 +4,6 @@
     "keywords": ["yii2", "helper", "datatable", "query"],
     "homepage": "http://www.defyma.com/",
     "type": "helper",
-    "license": "MIT"
+    "license": "MIT",
+    "minimum-stability": "stable"
 }
