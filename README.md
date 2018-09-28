@@ -3,13 +3,13 @@
 
 This helper only use SQL Query createCommand Not Activerecord!
 
-# Install With Composer
+## Install With Composer
 
 ```
     php composer.phar require defyma/yii2-datatable-manual-serverside:"v1.*"
 ```
 
-# Or Require it
+## Or Require it
 ```
     "defyma/yii2-datatable-manual-serverside": "v1.*"
 ```
