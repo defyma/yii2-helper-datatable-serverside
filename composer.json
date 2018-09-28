@@ -1,0 +1,8 @@
+{
+    "name": "yii2-datatable-manual-serverside",
+    "description": "Yii 2 Helper Manual Query Serverside for Data Table",
+    "keywords": ["yii2", "helper", "datatable", "query"],
+    "homepage": "http://www.defyma.com/",
+    "type": "helper",
+    "license": "MIT"
+}
