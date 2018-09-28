@@ -55,7 +55,7 @@ controller/site.php
                     a.SATUAN_WBS
             ";
 
-            $data = \app\components\DatatableHelper::generate([
+            $data = \defyma\helper\DatatableHelper::generate([
                 'connection' => $connection,
                 'db_type'    => 'oracle', //db_type : oracle or mysql, default is mysql
                 'query'      => $sql,
@@ -111,16 +111,16 @@ controller/site.php
     	    return $data;
         }
 
-    	return $this->render('show_data_mahasiswa', []);
+    	return $this->render('show_data', []);
     }
     ...
 ```
 ----
-views/site/show_data_mahasiswa.php
+views/site/show_data.php
 ```
 <?php
     ...
-    echo \app\components\DatatableHelper::table([
+    echo \defyma\helper\DatatableHelper::table([
         'context' => $this,
         'url'     => \Yii::$app->getUrlManager()->createUrl(['parameter/spendingitems/getdata']),
         'option_datatable' => [ //Option for Data Table
