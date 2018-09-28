@@ -18,6 +18,8 @@ controller/site.php
     {
     	if(Yii::$app->request->isAjax)
         {
+            $connection = Yii::$app->get('db');
+
             $sql = "
                 SELECT
                     a.ID,
@@ -49,7 +51,7 @@ controller/site.php
 
             $data = \app\components\DatatableHelper::generate([
                 'connection' => $connection,
-                'db_type'    => 'oracle',
+                'db_type'    => 'oracle', //db_type : oracle or mysql, default is mysql
                 'query'      => $sql,
                 'columnSearch' => [ //Column For Search in Table
                     'a.KATEGORI',
