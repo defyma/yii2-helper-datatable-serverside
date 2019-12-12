@@ -389,16 +389,42 @@ class DatatableHelper// extends Component
 
             if(typeof initDataTable_'.$id_table.' != "function")
             {
-                initDataTable_'.$id_table.' = (tbl_id, param) => {
+                initDataTable_'.$id_table.' = (tbl_id, param = "") => {
 
                     //if Datatable Destroy first
                     if ( $.fn.DataTable.isDataTable( "#" + tbl_id ) )
                         $("#" + tbl_id).DataTable().destroy();
-
+                        
+                        /* 
+                            @bug param is undefined
+                            thanks to @demassah (https://gitlab.com/demassah)
+                        */
+                        var _def_url = "'.$url.'";
+                        
+                        //cek url has ?
+                        var cek = _def_url.split("?");
+                        if(cek.length > 1) {
+                            if(param != "") {
+                                var _x = param.charAt(0);
+                                if(_x == "?") {
+                                    param = param.substr(1);
+                                }
+                                _def_url = _def_url + "&" + param;
+                            }
+                        } else {
+                            if(param != "") {
+                                var _x = param.charAt(0);
+                                if(_x == "?") {
+                                    param = param.substr(1);
+                                }
+                                _def_url = _def_url + "?" + param;
+                            }
+                        }
+                        
                     '.self::$var_datatable.' = $("#" + tbl_id).DataTable( {
                         "processing": true,
                         "serverSide": true,
-                        "ajax": "'.$url.'" + "?" + param,
+                        "ajax": _def_url,
                         "ordering": '.$ordering.',
                         '.$js_columnDefs.'
                         '.$js_footerCallback.'
